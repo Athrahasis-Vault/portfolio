@@ -1,17 +1,19 @@
 ---
+import Layout from '../layouts/Layout.astro';
 let name = 'Emanuel Montes Cornejo';
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>¡Hola! Soy {name} ✌</h1>
-		<p>Starting Now! 😎🌟</p>
-	</body>
-</html>
+<Layout title="Home Page">
+  <div class="bg-gradient-to-br from-indigo-500 to-purple-600 min-h-screen p-10">
+    <h1 class="text-6xl font-bold text-white">¡Hola! Soy {name} ✌</h1>
+    <p class="text-2xl text-white mt-4">Starting Now! 😎🌟</p>
+    <ul class="mt-6 space-y-2">
+      <li>
+        <a href="/about" class="text-white hover:underline">About</a>
+      </li>
+      <li>
+        <a href="/contact" class="text-white hover:underline">Contact</a>
+      </li>
+    </ul>
+  </div>
+</Layout>
