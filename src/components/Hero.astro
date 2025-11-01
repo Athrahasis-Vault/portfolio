@@ -1,0 +1,34 @@
+<section class="min-h-screen flex items-center justify-center text-white px-4">
+  <div class="text-center animate-fade-in">
+    <h1 class="text-4xl md:text-6xl font-bold mb-4 leading-tight">
+      Hola, mi nombre es <span class="text-purple-300">Emanuel Montes Cornejo</span>!
+    </h1>
+    <p class="text-xl md:text-2xl mb-8">Un gusto conocerte. 👋</p>
+    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+      <a 
+        href="/projects" 
+        class="bg-white text-purple-600 px-8 py-3 rounded-full font-semibold hover:scale-105 transition transform"
+        aria-label="Ver mis proyectos"
+      >
+        Get Started
+      </a>
+      <a 
+        href="/about" 
+        class="border-2 border-white px-8 py-3 rounded-full font-semibold hover:bg-white hover:text-purple-600 transition"
+        aria-label="Saber más sobre mí"
+      >
+        Learn more →
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .animate-fade-in {
+    animation: fadeIn 1.2s ease-out forwards;
+  }
+</style>
