@@ -3,10 +3,14 @@ import "../styles/global.css";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 
+interface Props {
+  title: string;
+}
+
 const { title } = Astro.props;
 ---
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
   <head>
     <meta charset="utf-8" />
@@ -14,14 +18,224 @@ const { title } = Astro.props;
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
     <title>{title} | My Astro Site</title>
+    <meta name="description" content="Portafolio profesional de desarrollo web" />
   </head>
-  <body class="bg-gradient-to-br from-indigo-900 to-sky-900 min-h-screen flex flex-col">
+  <body>
+    <button 
+      id="theme-toggle" 
+      class="theme-toggle"
+      aria-label="Cambiar tema"
+      type="button"
+    >
+      <svg class="theme-icon sun-icon" fill="currentColor" viewBox="0 0 20 20">
+        <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd" />
+      </svg>
+      <svg class="theme-icon moon-icon active" fill="currentColor" viewBox="0 0 20 20">
+        <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
+      </svg>
+    </button>
+
     <Header />
-    <div class="flex-1 relative">
-      <main class="container mx-auto px-4 pt-16 sm:pt-20 md:pt-24">
+    <div class="page-wrapper">
+      <main>
         <slot />
       </main>
       <Footer />
     </div>
   </body>
 </html>
+
+<style is:global>
+  :root {
+    --bg-primary: #0f172a;
+    --bg-secondary: #1e293b;
+    --text-primary: #f1f5f9;
+    --text-secondary: #cbd5e1;
+    --text-tertiary: #94a3b8;
+    --border-color: rgba(255, 255, 255, 0.1);
+    --shadow-color: rgba(0, 0, 0, 0.3);
+  }
+
+  body.light-theme {
+    --bg-primary: #f8fafc;
+    --bg-secondary: #ffffff;
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --text-tertiary: #64748b;
+    --border-color: #e2e8f0;
+    --shadow-color: rgba(0, 0, 0, 0.1);
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+  }
+
+  body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    transition: background-color 0.3s ease, color 0.3s ease;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    line-height: 1.6;
+  }
+
+  .page-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+
+  main {
+    flex: 1;
+  }
+
+  .theme-toggle {
+    position: fixed;
+    top: 1.5rem;
+    right: 1.5rem;
+    z-index: 9999;
+    padding: 0.75rem;
+    border-radius: 9999px;
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .theme-toggle:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    transform: scale(1.05);
+  }
+
+  .theme-toggle:active {
+    transform: scale(0.95);
+  }
+
+  .theme-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    display: none;
+    transition: all 0.3s ease;
+  }
+
+  .theme-icon.active {
+    display: block;
+  }
+
+  .sun-icon {
+    color: #fbbf24;
+  }
+
+  .moon-icon {
+    color: #93c5fd;
+  }
+
+  body.light-theme .sun-icon {
+    display: block;
+  }
+
+  body.light-theme .moon-icon {
+    display: none;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 5px;
+    transition: background 0.3s ease;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3);
+  }
+
+  body.light-theme ::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+  }
+
+  body.light-theme ::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.3);
+  }
+
+  .text-gray-300 {
+    color: var(--text-secondary);
+  }
+
+  .text-gray-400 {
+    color: var(--text-tertiary);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  @view-transition {
+    navigation: auto;
+  }
+</style>
+
+<script is:inline>
+  (function() {
+    const theme = localStorage.getItem('theme') || 'dark';
+    if (theme === 'light') {
+      document.documentElement.classList.add('light-theme');
+      document.body.classList.add('light-theme');
+    }
+  })();
+</script>
+
+<script>
+  const initTheme = () => {
+    const theme = localStorage.getItem('theme') || 'dark';
+    document.body.classList.toggle('light-theme', theme === 'light');
+  };
+
+  const toggleTheme = () => {
+    const isLight = document.body.classList.toggle('light-theme');
+    console.log('Tema cambiado a:', isLight ? 'light' : 'dark');
+    localStorage.setItem('theme', isLight ? 'light' : 'dark');
+  };
+
+  const setupThemeToggle = () => {
+    const button = document.getElementById('theme-toggle');
+    if (button) {
+      const newButton = button.cloneNode(true);
+      button.parentNode?.replaceChild(newButton, button);
+      newButton.addEventListener('click', toggleTheme);
+    }
+  };
+
+  document.addEventListener('astro:page-load', () => {
+    initTheme();
+    setupThemeToggle();
+  });
+
+  document.addEventListener('astro:before-swap', initTheme);
+</script>

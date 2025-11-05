@@ -1,0 +1,135 @@
+---
+import ProjectCard from './ProjectCard.astro';
+import projects from '../data/projects.json';
+---
+
+<section 
+  id="projects" 
+  class="section-container"
+  data-section="projects"
+>
+  <div class="glow-effect glow-cyan-blue"></div>
+  
+  <div class="content-wrapper">
+    <header class="section-header">
+      <h2 class="section-title">
+        Mis Proyectos
+      </h2>
+      <p class="section-description">
+        Una colección de proyectos que demuestran mis habilidades y experiencia
+      </p>
+    </header>
+
+    <div class="bento-grid">
+      {projects.map((project, index) => (
+        <ProjectCard 
+          {...project} 
+          featured={index === 0 || index === 3}
+        />
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .section-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: 4rem 1rem;
+    scroll-margin-top: 0;
+  }
+
+  .glow-effect {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    z-index: 0;
+    will-change: transform;
+  }
+
+  .glow-effect::before {
+    content: '';
+    width: 1000px;
+    height: 1000px;
+    border-radius: 50%;
+    filter: blur(120px);
+    opacity: 0.2;
+    animation: pulse 8s ease-in-out infinite;
+  }
+
+  .glow-cyan-blue::before {
+    background: radial-gradient(circle, #06b6d4 0%, #3b82f6 50%, transparent 70%);
+  }
+
+  @keyframes pulse {
+    0%, 100% {
+      transform: scale(1);
+      opacity: 0.2;
+    }
+    50% {
+      transform: scale(1.1);
+      opacity: 0.3;
+    }
+  }
+
+  .content-wrapper {
+    width: 100%;
+    max-width: 80rem;
+    margin: 0 auto;
+    padding: 0 1rem;
+    position: relative;
+    z-index: 10;
+  }
+
+  .section-header {
+    text-align: center;
+    margin-bottom: 4rem;
+  }
+
+  .section-title {
+    font-size: clamp(2.5rem, 5vw, 3.75rem);
+    font-weight: 700;
+    margin-bottom: 1rem;
+    background: linear-gradient(to right, #c084fc, #60a5fa);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .section-description {
+    font-size: 1.125rem;
+    color: #cbd5e1;
+    max-width: 42rem;
+    margin: 0 auto;
+  }
+
+  :global(body.light-theme) .section-description {
+    color: #475569;
+  }
+
+  .bento-grid {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 1rem;
+    grid-auto-rows: minmax(250px, auto);
+  }
+
+  @media (min-width: 768px) {
+    .bento-grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .bento-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+</style>

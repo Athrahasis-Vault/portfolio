@@ -1,0 +1,228 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  tech: string[];
+  link: string;
+  featured?: boolean;
+}
+
+const { title, description, tech, link, featured = false } = Astro.props;
+---
+
+<a 
+  href={link} 
+  class:list={['project-card', { 'featured': featured }]}
+>
+  <div class="card-glow"></div>
+  <div class="card-content">
+    <div class="card-body">
+      <h3 class="card-title">
+        {title}
+      </h3>
+      <p class="card-description">
+        {description}
+      </p>
+    </div>
+    <div class="card-tech">
+      {tech.map(t => (
+        <span class="tech-tag">{t}</span>
+      ))}
+    </div>
+  </div>
+  <div class="card-arrow">
+    <svg class="arrow-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+    </svg>
+  </div>
+</a>
+
+<style>
+  .project-card {
+    position: relative;
+    display: block;
+    padding: 1.5rem;
+    border-radius: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background-color: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(8px);
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .project-card:hover {
+    border-color: rgba(168, 85, 247, 0.5);
+    box-shadow: 
+      0 20px 25px -5px rgba(0, 0, 0, 0.3),
+      0 8px 10px -6px rgba(0, 0, 0, 0.3);
+    transform: translateY(-4px);
+  }
+
+  .project-card.featured {
+    grid-column: span 1;
+    grid-row: span 1;
+  }
+
+  @media (min-width: 768px) {
+    .project-card.featured {
+      grid-column: span 2;
+      grid-row: span 2;
+    }
+
+    .project-card.featured .card-title {
+      font-size: 1.875rem;
+      line-height: 2.25rem;
+    }
+
+    .project-card.featured .card-description {
+      font-size: 1.125rem;
+      line-height: 1.75rem;
+    }
+  }
+
+  .card-glow {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(168, 85, 247, 0.1), rgba(59, 130, 246, 0.1));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .project-card:hover .card-glow {
+    opacity: 1;
+  }
+
+  .card-content {
+    position: relative;
+    z-index: 10;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .card-body {
+    flex: 1;
+  }
+
+  .card-title {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    color: #f1f5f9;
+    transition: color 0.3s ease;
+  }
+
+  .project-card:hover .card-title {
+    color: #c084fc;
+  }
+
+  .card-description {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    color: #cbd5e1;
+    margin-bottom: 1rem;
+  }
+
+  .card-tech {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: auto;
+  }
+
+  .tech-tag {
+    padding: 0.25rem 0.75rem;
+    font-size: 0.75rem;
+    line-height: 1rem;
+    font-weight: 500;
+    border-radius: 9999px;
+    background-color: rgba(168, 85, 247, 0.2);
+    color: #e9d5ff;
+    transition: background-color 0.3s ease;
+  }
+
+  .project-card:hover .tech-tag {
+    background-color: rgba(168, 85, 247, 0.3);
+  }
+
+  .card-arrow {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 9999px;
+    background-color: #9333ea;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transform: translateX(0.5rem);
+    transition: all 0.3s ease;
+  }
+
+  .project-card:hover .card-arrow {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .arrow-icon {
+    width: 1rem;
+    height: 1rem;
+    color: white;
+  }
+
+  :global(body.light-theme) .project-card {
+    background-color: white;
+    border-color: #e2e8f0;
+  }
+
+  :global(body.light-theme) .project-card:hover {
+    border-color: #c084fc;
+    box-shadow: 
+      0 20px 25px -5px rgba(0, 0, 0, 0.1),
+      0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  }
+
+  :global(body.light-theme) .card-title {
+    color: #111827;
+  }
+
+  :global(body.light-theme) .project-card:hover .card-title {
+    color: #7e22ce;
+  }
+
+  :global(body.light-theme) .card-description {
+    color: #4b5563;
+  }
+
+  :global(body.light-theme) .tech-tag {
+    background-color: #f3e8ff;
+    color: #7e22ce;
+  }
+
+  :global(body.light-theme) .project-card:hover .tech-tag {
+    background-color: #e9d5ff;
+  }
+
+  :global(body.light-theme) .card-arrow {
+    background-color: #a855f7;
+  }
+
+  .project-card {
+    will-change: transform;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .project-card,
+    .card-glow,
+    .card-title,
+    .tech-tag,
+    .card-arrow {
+      transition: none;
+    }
+  }
+</style>

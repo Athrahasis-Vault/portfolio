@@ -1,0 +1,20 @@
+[
+  {
+    "title": "TaskFlow",
+    "description": "App de tareas colaborativas con tiempo real",
+    "tech": ["React", "Node.js", "Socket.io"],
+    "link": "#"
+  },
+  {
+    "title": "WeatherDash",
+    "description": "Dashboard del clima con gráficos",
+    "tech": ["React", "Chart.js", "OpenWeather"],
+    "link": "#"
+  },
+  {
+    "title": "E-Commerce Mini",
+    "description": "Tienda con carrito y pago simulado",
+    "tech": ["Next.js", "Stripe", "Prisma"],
+    "link": "#"
+  }
+]

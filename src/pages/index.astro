@@ -1,38 +1,177 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/Hero.astro';
-
-let name = 'Emanuel Montes Cornejo';
+import ProjectsSection from '../components/ProjectsSection.astro';
 ---
 
-<BaseLayout title="Home Page">
-  <!-- <div class="relative isolate lg:px-8">
-    <div class="mx-auto max-w-2xl py-24 sm:py-32 lg:py-40">
-      <div class="hidden sm:mb-8 sm:flex sm:justify-center">
-        <div class="relative rounded-full px-3 py-1 text-sm/6 text-gray-400 ring-1 ring-white/10 hover:ring-white/20">
-          Pagina en construccion... 🏗👷‍♂️ 
-          <a href="#" class="font-semibold text-indigo-400">
-            <span aria-hidden="true" class="absolute inset-0"></span>Muy Pronto <span aria-hidden="true">&rarr;</span>
-          </a>
-        </div>
-      </div>
-      <div class="text-center">
-        <h1 class="text-5xl font-semibold tracking-tight text-balance text-white sm:text-7xl">
-          Hola, mi nombre es {name}! Un gusto conocerte.
-        </h1>
-        <p class="mt-8 text-lg font-medium text-pretty text-gray-400 sm:text-xl/8">
-          Mi portafolio sigue en construccion, por favor pido paciencia 😎✌
-        </p>
-        <div class="mt-10 flex items-center justify-center gap-x-6">
-          <a href="#" class="rounded-md bg-indigo-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">
-            Get started
-          </a>
-          <a href="#" class="text-sm/6 font-semibold text-white">
-            Learn more <span aria-hidden="true">→</span>
-          </a>
-        </div>
-      </div>
-    </div>
-  </div> -->
-  <Hero />
+<BaseLayout title="Home">
+  <section 
+    id="home" 
+    class="section-container"
+    data-section="home"
+  >
+    <div class="glow-effect glow-blue-purple"></div>
+    <Hero />
+  </section>
+
+  <ProjectsSection />
 </BaseLayout>
+
+<style>
+  .section-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: 4rem 1rem;
+    scroll-margin-top: 0;
+  }
+
+  .glow-effect {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .glow-effect::before {
+    content: '';
+    width: 800px;
+    height: 800px;
+    border-radius: 50%;
+    filter: blur(120px);
+    opacity: 0.2;
+    animation: pulse 8s ease-in-out infinite;
+  }
+
+  .glow-blue-purple::before {
+    background: radial-gradient(circle, #3b82f6 0%, #8b5cf6 50%, transparent 70%);
+  }
+
+  .glow-cyan-blue::before {
+    background: radial-gradient(circle, #06b6d4 0%, #3b82f6 50%, transparent 70%);
+  }
+
+  @keyframes pulse {
+    0%, 100% {
+      transform: scale(1);
+      opacity: 0.2;
+    }
+    50% {
+      transform: scale(1.1);
+      opacity: 0.3;
+    }
+  }
+
+  .content-wrapper {
+    width: 100%;
+    max-width: 80rem;
+    margin: 0 auto;
+    padding: 0 1rem;
+    position: relative;
+    z-index: 10;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  .glow-effect {
+    will-change: transform;
+  }
+</style>
+
+<script>
+  const sectionMetadata: Record<string, { title: string; description: string }> = {
+    home: {
+      title: 'Home',
+      description: 'Bienvenido a mi portafolio profesional'
+    },
+    projects: {
+      title: 'Proyectos',
+      description: 'Una colección de proyectos que demuestran mis habilidades y experiencia en desarrollo web'
+    }
+  };
+
+  const updateMetadata = (sectionId: string) => {
+    if (!sectionMetadata[sectionId]) return;
+    
+    const { title, description } = sectionMetadata[sectionId];
+    
+    const path = sectionId === 'home' ? '/' : `/#${sectionId}`;
+    window.history.replaceState(null, '', path);
+    
+    document.title = `${title} | My Astro Site`;
+    
+    let meta = document.querySelector('meta[name="description"]');
+    if (!meta) {
+      meta = document.createElement('meta');
+      meta.setAttribute('name', 'description');
+      document.head.appendChild(meta);
+    }
+    meta.setAttribute('content', description);
+  };
+
+  const observeSections = () => {
+    const sections = document.querySelectorAll<HTMLElement>('[data-section]');
+    
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const sectionId = entry.target.getAttribute('data-section');
+            if (sectionId) {
+              updateMetadata(sectionId);
+            }
+          }
+        });
+      },
+      { 
+        threshold: 0.5,
+        rootMargin: '-100px 0px -100px 0px'
+      }
+    );
+
+    sections.forEach((section) => observer.observe(section));
+  };
+
+  const handleHashNavigation = () => {
+    const hash = window.location.hash.slice(1);
+    if (hash) {
+      const target = document.getElementById(hash);
+      if (target) {
+        setTimeout(() => {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100);
+      }
+    }
+  };
+
+  const setupSmoothScroll = () => {
+    const links = document.querySelectorAll('a[href^="/#"]');
+    links.forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const href = link.getAttribute('href');
+        if (href) {
+          const targetId = href.replace('/#', '');
+          const target = document.getElementById(targetId);
+          if (target) {
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            window.history.pushState(null, '', href);
+          }
+        }
+      });
+    });
+  };
+
+  document.addEventListener('astro:page-load', () => {
+    observeSections();
+    handleHashNavigation();
+    setupSmoothScroll();
+  });
+</script>
